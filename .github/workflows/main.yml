@@ -1,0 +1,43 @@
+## GitHub Action
+
+name: AWS Infra Provision
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  Docker:
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    name: 'AWS EKS Deployments'
+    runs-on: ubuntu-latest
+    env:
+
+      ## Workspace Variable used for all steps
+      ## Input values are 'dev or mgmt or prod'
+      WORKSPACE_ENV: ''
+
+      ## Web-App installation to EKS Cluster, bootstrap parameters.
+      ##
+      WEBAPP_VERBOSE: 'install'    # Allowed values are 'install or uninstall' , Null (" ") to skip the process.
+
+    steps:
+    ## Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    ## WebApp bootstrap using GitHub Docker Container Action https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action
+    - name: WebApp Bootstrap
+      if: ${{ env.WEBAPP_VERBOSE != '' }}
+      uses: ./actions/web-app-action
+
+
+#### END ####

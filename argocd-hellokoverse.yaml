@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hellokoverse
+  labels:
+    team: devops
+    environment: demo
+spec:
+  project: default
+  source:
+    path: manifests/hellokoverse
+    repoURL: 'https://github.com/gpscarv/devops-argocd-k8-applications.git'
+    targetRevision: HEAD
+  destination:
+    namespace: default
+    server: 'https://kubernetes.default.svc'
+  syncPolicy:
+    automated: {}

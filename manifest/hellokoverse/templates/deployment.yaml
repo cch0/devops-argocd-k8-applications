@@ -1,0 +1,31 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: hellokoverse
+  labels:
+    name: hellokoverse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: hellokoverse
+  template:
+    metadata:
+      labels:
+        name: hellokoverse
+    spec:
+      containers:
+        - image: gscarvell/hellokoverse:latest
+          resources:
+            limits:
+              memory: 32Mi
+              cpu: 1000m
+          name: helloworld
+          ports:
+            - name: http
+              containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+      restartPolicy: Always
